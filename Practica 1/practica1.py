@@ -1,79 +1,89 @@
-# clase para representar un nodo en el arbol
+from time import perf_counter  # Importa perf_counter para mayor precisión
+
+# Clase para representar un nodo en el árbol
 class Nodo:
     def __init__(self, dato):
         self.dato = dato
         self.hijos = []
 
-# funcion para hacer la busqueda en anchura (bfs)
+# Función para hacer la búsqueda en anchura (BFS)
 def bfs(nodoInicial, nodoAEncontrar):
-    cola = [nodoInicial]  # lista para la cola
-    recorrido = ""  # variable para almacenar el recorrido
+    start_time = perf_counter()  # Tiempo inicial
+    cola = [nodoInicial]  # Lista para la cola
+    recorrido = ""  # Variable para almacenar el recorrido
 
-    while len(cola) > 0:
-        # sacar el primer nodo de la cola
+    while cola:
+        # Sacar el primer nodo de la cola
         nodoActual = cola.pop(0)
-        recorrido += str(nodoActual.dato) + " "  # agregar a la cadena de recorrido
+        recorrido += str(nodoActual.dato) + " "  # Agregar al recorrido
 
-        # verificar si hemos encontrado el nodo buscado
+        # Verificar si hemos encontrado el nodo buscado
         if nodoActual.dato == nodoAEncontrar:
-            break  # detener la busqueda si encontramos el nodo
+            break  # Detener la búsqueda si encontramos el nodo
 
-        # agregar los hijos del nodo actual a la cola
-        for hijo in nodoActual.hijos:
-            cola.append(hijo)
+        # Agregar los hijos del nodo actual a la cola
+        cola.extend(nodoActual.hijos)
 
-    # imprimir los nodos recorridos
-    print("recorrido bfs:", recorrido)
+    # Imprimir los nodos recorridos
+    print("Recorrido BFS:", recorrido)
+    end_time = perf_counter()  # Tiempo final
+    execution_time = (end_time - start_time) * 1e6  # Convertir a microsegundos
+    print(f"Tiempo de ejecución de BFS: {execution_time:.2f} microsegundos")
 
-# funcion para hacer la busqueda en profundidad (dfs)
+# Función para hacer la búsqueda en profundidad (DFS)
 def dfs(nodoInicial, nodoAEncontrar):
-    pila = [nodoInicial]  # lista para la pila
-    recorrido = ""  # variable para almacenar el recorrido
+    start_time = perf_counter()  # Tiempo inicial
+    pila = [nodoInicial]  # Lista para la pila
+    recorrido = ""  # Variable para almacenar el recorrido
 
-    while len(pila) > 0:
-        # sacar el ultimo nodo de la pila
+    while pila:
+        # Sacar el último nodo de la pila
         nodoActual = pila.pop()
-        recorrido += str(nodoActual.dato) + " "  # agregar a la cadena de recorrido
+        recorrido += str(nodoActual.dato) + " "  # Agregar al recorrido
 
-        # verificar si hemos encontrado el nodo buscado
+        # Verificar si hemos encontrado el nodo buscado
         if nodoActual.dato == nodoAEncontrar:
-            break  # detener la busqueda si encontramos el nodo
+            break  # Detener la búsqueda si encontramos el nodo
 
-        # agregar los hijos del nodo actual a la pila (en orden inverso)
-        for hijo in reversed(nodoActual.hijos):
-            pila.append(hijo)
+        # Agregar los hijos del nodo actual a la pila (en orden inverso)
+        pila.extend(reversed(nodoActual.hijos))
 
-    # imprimir los nodos recorridos
-    print("recorrido dfs:", recorrido)
+    # Imprimir los nodos recorridos
+    print("Recorrido DFS:", recorrido)
+    end_time = perf_counter()  # Tiempo final
+    execution_time = (end_time - start_time) * 1e6  # Convertir a microsegundos
+    print(f"Tiempo de ejecución de DFS: {execution_time:.2f} microsegundos")
 
-# funcion para construir el arbol
+# Función para construir el árbol
 def crearArbol():
-    nodo1 = Nodo(1)   # capa 1
-    nodo2 = Nodo(2)   # capa 2
+    nodo1 = Nodo(1)   # Capa 1
+    nodo2 = Nodo(2)   # Capa 2
     nodo3 = Nodo(3)
-    nodo4 = Nodo(4)   # capa 3
+    nodo4 = Nodo(4)   # Capa 3
     nodo5 = Nodo(5)
     nodo6 = Nodo(6)
     nodo7 = Nodo(7)
 
-    # asignar los hijos a cada nodo
+    # Asignar los hijos a cada nodo (grafo no dirigido)
     nodo1.hijos = [nodo2, nodo3]
     nodo2.hijos = [nodo4, nodo5]
     nodo3.hijos = [nodo6, nodo7]
 
     return nodo1
 
-# funcion principal
+# Función principal
 def main():
-    # crear el arbol
+    # Crear el árbol
     nodo1 = crearArbol()
 
-    # pedir al usuario que elija el nodo a buscar
-    nodoAEncontrar = int(input("elige el nodo a buscar: "))
+    # Pedir al usuario que elija el nodo a buscar
+    nodoAEncontrar = int(input("Elige el nodo a buscar: "))
 
-    # hacer los recorridos bfs y dfs desde el nodo inicial
+    # Hacer los recorridos BFS y DFS desde el nodo inicial
     bfs(nodo1, nodoAEncontrar)
     dfs(nodo1, nodoAEncontrar)
 
-# iniciar programa
-main()
+# Iniciar programa
+if __name__ == "__main__":
+    main()
+
