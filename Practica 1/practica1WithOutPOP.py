@@ -9,19 +9,20 @@ class Nodo:
 
 # Función para hacer la búsqueda en anchura (BFS)
 def bfs(nodoInicial, nodoAEncontrar):
+    tracemalloc.start()  # Iniciar rastreo de memoria para BFS
     start_time = perf_counter()  # Tiempo inicial
     cola = [None] * 100  # Cola predefinida con espacio suficiente
     recorrido = ""  # Variable para almacenar el recorrido
-    indice_insercion = 0  # Índice para insertar nodos
-    indice_lectura = 0  # Índice para leer nodos
+    indiceInsercion = 0  # Índice para insertar nodos
+    indiceLectura = 0  # Índice para leer nodos
 
-    cola[indice_insercion] = nodoInicial
-    indice_insercion += 1
+    cola[indiceInsercion] = nodoInicial
+    indiceInsercion += 1
 
-    while indice_lectura < indice_insercion:
-        nodoActual = cola[indice_lectura]  # Leer el nodo actual usando el índice de lectura
+    while indiceLectura < indiceInsercion:
+        nodoActual = cola[indiceLectura]  # Leer el nodo actual usando el índice de lectura
         recorrido += str(nodoActual.dato) + " "  # Agregar al recorrido
-        indice_lectura += 1  # Avanzar el índice de lectura
+        indiceLectura += 1  # Avanzar el índice de lectura
 
         # Verificar si hemos encontrado el nodo buscado
         if nodoActual.dato == nodoAEncontrar:
@@ -29,8 +30,8 @@ def bfs(nodoInicial, nodoAEncontrar):
 
         # Insertar los hijos del nodo actual en la cola
         for i in range(len(nodoActual.hijos)):
-            cola[indice_insercion] = nodoActual.hijos[i]
-            indice_insercion += 1
+            cola[indiceInsercion] = nodoActual.hijos[i]
+            indiceInsercion += 1
 
     # Imprimir los nodos recorridos
     print("Recorrido BFS:", recorrido)
@@ -38,20 +39,26 @@ def bfs(nodoInicial, nodoAEncontrar):
     execution_time = (end_time - start_time) * 1e6  # Convertir a microsegundos
     print(f"Tiempo de ejecución de BFS: {execution_time:.2f} microsegundos")
 
+    # Obtener estadísticas de memoria para BFS
+    memoria_actual, memoria_pico = tracemalloc.get_traced_memory()
+    print(f"Memoria utilizada por BFS: {memoria_actual / 1024:.2f} KB")
+    tracemalloc.stop()  # Detener rastreo de memoria para BFS
+
 # Función para hacer la búsqueda en profundidad (DFS)
 def dfs(nodoInicial, nodoAEncontrar):
+    tracemalloc.start()  # Iniciar rastreo de memoria para DFS
     start_time = perf_counter()  # Tiempo inicial
     pila = [None] * 100  # Pila predefinida con espacio suficiente
     recorrido = ""  # Variable para almacenar el recorrido
-    indice_insercion = 0  # Índice para insertar nodos
-    indice_lectura = 0  # Índice para leer nodos
+    indiceInsercion = 0  # Índice para insertar nodos
+    indiceLectura = 0  # Índice para leer nodos
 
-    pila[indice_insercion] = nodoInicial
-    indice_insercion += 1
+    pila[indiceInsercion] = nodoInicial
+    indiceInsercion += 1
 
-    while indice_insercion > 0:
-        indice_insercion -= 1
-        nodoActual = pila[indice_insercion]  # Leer el nodo actual de la pila
+    while indiceInsercion > 0:
+        indiceInsercion -= 1
+        nodoActual = pila[indiceInsercion]  # Leer el nodo actual de la pila
         recorrido += str(nodoActual.dato) + " "  # Agregar al recorrido
 
         # Verificar si hemos encontrado el nodo buscado
@@ -60,14 +67,19 @@ def dfs(nodoInicial, nodoAEncontrar):
 
         # Insertar los hijos del nodo actual en la pila en orden inverso
         for i in range(len(nodoActual.hijos)-1, -1, -1):
-            pila[indice_insercion] = nodoActual.hijos[i]
-            indice_insercion += 1
+            pila[indiceInsercion] = nodoActual.hijos[i]
+            indiceInsercion += 1
 
     # Imprimir los nodos recorridos
     print("Recorrido DFS:", recorrido)
     end_time = perf_counter()  # Tiempo final
     execution_time = (end_time - start_time) * 1e6  # Convertir a microsegundos
     print(f"Tiempo de ejecución de DFS: {execution_time:.2f} microsegundos")
+
+    # Obtener estadísticas de memoria para DFS
+    memoria_actual, memoria_pico = tracemalloc.get_traced_memory()
+    print(f"Memoria utilizada por DFS: {memoria_actual / 1024:.2f} KB")
+    tracemalloc.stop()  # Detener rastreo de memoria para DFS
 
 # Función para construir el árbol
 def crearArbol():
@@ -94,20 +106,9 @@ def main():
     # Pedir al usuario que elija el nodo a buscar
     nodoAEncontrar = int(input("Elige el nodo a buscar: "))
 
-    # Iniciar el rastreo de memoria
-    tracemalloc.start()
-
     # Hacer los recorridos BFS y DFS desde el nodo inicial
     bfs(nodo1, nodoAEncontrar)
     dfs(nodo1, nodoAEncontrar)
-
-    # Obtener estadísticas de memoria después de la ejecución
-    memoria_actual, memoria_pico = tracemalloc.get_traced_memory()
-    print(f"Memoria actual usada: {memoria_actual / 1024:.2f} KB")
-    print(f"Memoria pico usada: {memoria_pico / 1024:.2f} KB")
-
-    # Detener el rastreo de memoria
-    tracemalloc.stop()
 
 # Iniciar programa
 if __name__ == "__main__":
