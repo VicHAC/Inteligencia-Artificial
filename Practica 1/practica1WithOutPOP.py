@@ -10,21 +10,27 @@ class Nodo:
 # Función para hacer la búsqueda en anchura (BFS)
 def bfs(nodoInicial, nodoAEncontrar):
     start_time = perf_counter()  # Tiempo inicial
-    cola = [nodoInicial]  # Lista para la cola
+    cola = [None] * 100  # Cola predefinida con espacio suficiente
     recorrido = ""  # Variable para almacenar el recorrido
-    indice = 0  # Índice para recorrer la cola
+    indice_insercion = 0  # Índice para insertar nodos
+    indice_lectura = 0  # Índice para leer nodos
 
-    while indice < len(cola):
-        nodoActual = cola[indice]  # Acceder al primer nodo usando el índice
+    cola[indice_insercion] = nodoInicial
+    indice_insercion += 1
+
+    while indice_lectura < indice_insercion:
+        nodoActual = cola[indice_lectura]  # Leer el nodo actual usando el índice de lectura
         recorrido += str(nodoActual.dato) + " "  # Agregar al recorrido
-        indice += 1  # Avanzar el índice para simular el "pop"
+        indice_lectura += 1  # Avanzar el índice de lectura
 
         # Verificar si hemos encontrado el nodo buscado
         if nodoActual.dato == nodoAEncontrar:
             break  # Detener la búsqueda si encontramos el nodo
 
-        # Agregar los hijos del nodo actual a la cola
-        cola.extend(nodoActual.hijos)
+        # Insertar los hijos del nodo actual en la cola
+        for i in range(len(nodoActual.hijos)):
+            cola[indice_insercion] = nodoActual.hijos[i]
+            indice_insercion += 1
 
     # Imprimir los nodos recorridos
     print("Recorrido BFS:", recorrido)
@@ -35,22 +41,27 @@ def bfs(nodoInicial, nodoAEncontrar):
 # Función para hacer la búsqueda en profundidad (DFS)
 def dfs(nodoInicial, nodoAEncontrar):
     start_time = perf_counter()  # Tiempo inicial
-    pila = [nodoInicial]  # Lista para la pila
+    pila = [None] * 100  # Pila predefinida con espacio suficiente
     recorrido = ""  # Variable para almacenar el recorrido
-    indice = len(pila) - 1  # Inicializar el índice al último elemento de la pila
+    indice_insercion = 0  # Índice para insertar nodos
+    indice_lectura = 0  # Índice para leer nodos
 
-    while indice >= 0:
-        nodoActual = pila[indice]  # Acceder al último nodo usando el índice
+    pila[indice_insercion] = nodoInicial
+    indice_insercion += 1
+
+    while indice_insercion > 0:
+        indice_insercion -= 1
+        nodoActual = pila[indice_insercion]  # Leer el nodo actual de la pila
         recorrido += str(nodoActual.dato) + " "  # Agregar al recorrido
-        indice -= 1  # Retroceder el índice para simular el "pop"
 
         # Verificar si hemos encontrado el nodo buscado
         if nodoActual.dato == nodoAEncontrar:
             break  # Detener la búsqueda si encontramos el nodo
 
-        # Agregar los hijos del nodo actual a la pila (en orden inverso)
-        pila.extend(reversed(nodoActual.hijos))
-        indice = len(pila) - 1  # Actualizar el índice al último nodo
+        # Insertar los hijos del nodo actual en la pila en orden inverso
+        for i in range(len(nodoActual.hijos)-1, -1, -1):
+            pila[indice_insercion] = nodoActual.hijos[i]
+            indice_insercion += 1
 
     # Imprimir los nodos recorridos
     print("Recorrido DFS:", recorrido)
