@@ -30,7 +30,7 @@ int main() {
         printf("6. Invertir cadena\n");
         printf("7. Potencia de la cadena\n");
         printf("8. Salir\n");
-        printf("Seleccione una opción: ");
+        printf("Seleccione una opcion: ");
         scanf("%d", &opcion);
 
         switch (opcion) {
