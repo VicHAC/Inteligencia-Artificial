@@ -11,7 +11,7 @@ def bfs(nodoInicial, nodoAEncontrar):
     start_time = perf_counter()  # Tiempo inicial
     cola = [nodoInicial]  # Lista para la cola
     recorrido = ""  # Variable para almacenar el recorrido
-#VIC
+
     while cola:
         # Sacar el primer nodo de la cola
         nodoActual = cola.pop(0)
