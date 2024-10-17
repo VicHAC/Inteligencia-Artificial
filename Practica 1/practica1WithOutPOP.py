@@ -42,6 +42,7 @@ def bfs(nodoInicial, nodoAEncontrar):
     # Obtener estadísticas de memoria para BFS
     memoria_actual, memoria_pico = tracemalloc.get_traced_memory()
     print(f"Memoria utilizada por BFS: {memoria_actual / 1024:.2f} KB")
+    print()
     tracemalloc.stop()  # Detener rastreo de memoria para BFS
 
 # Función para hacer la búsqueda en profundidad (DFS)
